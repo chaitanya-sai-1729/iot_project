@@ -69,9 +69,16 @@ app.post("/", async (req, res) => {
       const existingUser = await collection.findOne({ _id: username });
   
       if (existingUser) {
-        // Update the existing user's password
-        await collection.updateOne({ _id: username }, { $set: { password: password } });
-        res.send("Password updated successfully");
+        if (!existingUser.password && password) {
+          // Update the existing user's password with the entered one
+          await collection.updateOne(
+            { _id: username },
+            { $set: { password: password } }
+          );
+          res.send("Password updated successfully");
+        } else {
+          res.send("Username already exists");
+        }
       } else {
         // Insert a new user
         if (rfid) {
@@ -108,6 +115,8 @@ app.post("/", async (req, res) => {
       console.log(e);
     }
   });
+  
+  
   
   
 
@@ -154,7 +163,7 @@ app.post("/drivers",async(req,res)=>{
   
 })
 
-app.get("/admins",async(req,res)=>{
+app.get("/drivers",async(req,res)=>{
   const collection = client.db().collection("drivers");
 
   try{
