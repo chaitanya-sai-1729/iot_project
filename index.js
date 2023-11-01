@@ -93,22 +93,13 @@ app.post("/", async (req, res) => {
             res.send("Amount incremented successfully");
           } else {
             // Insert a new user with the provided RFID
-            await collection.insertOne({
-              _id: username,
-              password: password,
-              amount: amount,
-              rfid: rfid,
-            });
-            res.send("User created successfully");
+            
+            res.send("No user found");
           }
         } else {
           // Insert a new user without RFID
-          await collection.insertOne({
-            _id: username,
-            password: password,
-            amount: amount,
-          });
-          res.send("User created successfully");
+          
+          res.send("No user found");
         }
       }
     } catch (e) {
